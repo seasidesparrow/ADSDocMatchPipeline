@@ -501,7 +501,7 @@ class OracleUtil():
         try:
             daily_file = config.get('DOCMATCHPIPELINE_ORACLE_DUMP_FILE', '/tmp/oracle_dump.tsv')
             daily_maxage = config.get('DOCMATCHPIPELINE_ORACLE_DUMP_AGE', 9999)
-            result = query(daily_file, days=daily_maxage)
+            result = self.query(daily_file, days=daily_maxage)
             logger.info('Query returns: %s; Oracle db successfully dumped to file: %s' % (result, daily_file))
         except Exception as err:
             logger.info('Exception %s, stopping.' % str(err))
