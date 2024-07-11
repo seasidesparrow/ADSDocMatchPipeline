@@ -85,6 +85,13 @@ def get_args():
                         default=False,
                         help="Clean up the db, removing tmp bibcodes and lower confidence of multi matches.")
 
+    parser.add_argument("-do",
+                        "--dump_oracle",
+                        dest="dump_oracle",
+                        action="store_true",
+                        default=False,
+                        help="Trigger a query and download of the entire oracle database, to a filename specified in config.")
+
     return parser.parse_args()
 
 
@@ -156,6 +163,12 @@ def main():
             except Exception as err:
                 logger.error("Error issuing cleanup_db command to oracle_service: %s" % err)
 
+        # daily: dump the oracle database to file
+        elif args.dump_oracle:
+            try:
+                OracleUtil().dump_oracledb()
+            except Exception as err:
+                logger.error("Error dumping oracle db to file: %s" % err)
         else:
             logger.debug("Nothing to do.")
 
