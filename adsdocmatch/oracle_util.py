@@ -497,6 +497,15 @@ class OracleUtil():
                 self.output_query_matches(output_filename, results)
         return 'Got %d records from db.' % count
 
+    def dump_oracledb(self):
+        try:
+            daily_file = config.get('DOCMATCHPIPELINE_ORACLE_DUMP_FILE', '/tmp/oracle_dump.tsv')
+            daily_maxage = config.get('DOCMATCHPIPELINE_ORACLE_DUMP_AGE', 9999)
+            result = query(daily_file, days=daily_maxage)
+            logger.info('Query returns: %s; Oracle db successfully dumped to file: %s' % (result, daily_file))
+        except Exception as err:
+            logger.info('Exception %s, stopping.' % str(err))
+
     def update_db_curated_matches(self, input_filename):
         """
 

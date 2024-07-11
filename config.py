@@ -41,3 +41,7 @@ DOCMATCHPIPELINE_SOURCE_INCORRECT = "incorrect"
 
 # how many months to log the arXiv article that was not matched, among the classes of the arXiv that should have been matched
 DOCMATCHPIPELINE_EPRINT_RERUN_MONTHS = 12
+
+# daily dump of oracledb to text, for use by classic
+DOCMATCHPIPELINE_ORACLE_DUMP_FILE = '/matches.list'
+DOCMATCHPIPELINE_ORACLE_DUMP_AGE = 9999
