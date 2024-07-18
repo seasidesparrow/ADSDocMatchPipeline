@@ -92,6 +92,13 @@ def get_args():
                         default=False,
                         help="Trigger a query and download of the entire oracle database, to a filename specified in config.")
 
+    parser.add_argument("-us",
+                        "--load-user-submitted",
+                        dest="load_user_submitted",
+                        action="store_true",
+                        default=False,
+                        help="Submit the current user-submitted list to oracle, and empty the file contents into the frozen file.")
+
     return parser.parse_args()
 
 
@@ -162,6 +169,22 @@ def main():
                     logger.warning("The cleanup_db command did not return a status.")
             except Exception as err:
                 logger.error("Error issuing cleanup_db command to oracle_service: %s" % err)
+
+        # daily: process and archive user submissions
+        elif args.load_user_submitted:
+            # get the filename,
+            # read the file contents,
+            #     pull out comment lines,
+            #     check for dups
+            #         send dups to graylog / file
+            # send clean records to oracle via OracleUtil (memory or tmp file)
+            #     if success:
+            #         log the success,
+            #         write contents to frozen file with timestamp
+            #         blank user-submitted file and add header   
+            #     if failure:
+            #         log the failure with debugging info
+            pass
 
         # daily: dump the oracle database to file
         elif args.dump_oracle:
