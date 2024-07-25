@@ -5,7 +5,7 @@ from datetime import datetime
 from adsputils import load_config
 
 proj_home = os.path.realpath(os.path.dirname(__file__)+ "/../")
-config = load_config(proj_home=proj_home)
+conf = load_config(proj_home=proj_home)
 
 class BackupFileException(Exception):
     pass
@@ -17,6 +17,9 @@ class MatchFormatException(Exception):
     pass
 
 class MissingFileException(Exception):
+    pass
+
+class UserSubmittedException(Exception):
     pass
 
 
@@ -76,3 +79,18 @@ def backup_to_frozen(live_file, frozen_file):
         raise MissingFileException("One or both of %s, %s are missing." % live_file, frozen_file)
 
 
+def read_user_submitted(input_filename):
+    try:
+        input_pairs=[]
+        with open(input_filename, "r") as fc:
+            for line in fc.readlines():
+                if not re.search(r"^\s+#", line):
+                    try:
+                        (pre, pub) = line.strip().split('\t')
+                    except:
+                        pass
+                    else:
+                        input_pairs.append((pre,pub))
+        return input_pairs
+    except Exception as err:
+        raise UserSubmittedException(err)

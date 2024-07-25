@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import re
 import csv
+import adsdocmatch.utils as utils
 from pathlib import Path
 
 from adsputils import setup_logging, load_config
@@ -506,6 +507,7 @@ class OracleUtil():
         except Exception as err:
             logger.info('Exception %s, stopping.' % str(err))
 
+
     def update_db_curated_matches(self, input_filename):
         """
 
@@ -614,3 +616,25 @@ class OracleUtil():
         except Exception as err:
             logger.error("Error from cleanup_db: %s" % err)
             return "Error from cleanup_db: %s" % err
+
+    def load_user_submitted(self):
+        input_filename = conf.get("DOCMATCHPIPELINE_USER_SUBMITTED_FILE", "/tmp/user_submitted.list")
+        input_pairs = utils.read_user_submitted(input_filename)
+        try:
+            while input_pairs:
+                try:
+                    (upload_rows, retry_rows) = utils.dedup_pairs(input_pairs)
+                    match_upload = [[x, y, 1.0] for (x, y) in upload_rows]
+                    result = self.add_to_db(match_upload)
+                    logger.info("Result from add_to_db: %s" % result)
+                except Exception as err:
+                    raise Exception("Error loading user submitted: %s" % err)
+                else:
+                    if retry_rows:
+                        input_pairs = retry_rows
+                    else:
+                        input_pairs = []
+            frozen_filename = conf.get("DOCMATCHPIPELINE_USER_SUBMITTED_FROZEN_FILE", "/tmp/user_submitted_frozen.list")
+            utils.backup_to_frozen(input_filename, frozen_filename)
+        except Exception as err:
+            logger.error("Backup to frozen file failed: %s" % err)

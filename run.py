@@ -172,19 +172,7 @@ def main():
 
         # daily: process and archive user submissions
         elif args.load_user_submitted:
-            # get the filename,
-            # read the file contents,
-            #     pull out comment lines,
-            #     check for dups
-            #         send dups to graylog / file
-            # send clean records to oracle via OracleUtil (memory or tmp file)
-            #     if success:
-            #         log the success,
-            #         write contents to frozen file with timestamp
-            #         blank user-submitted file and add header   
-            #     if failure:
-            #         log the failure with debugging info
-            pass
+            OracleUtil().load_user_submitted()
 
         # daily: dump the oracle database to file
         elif args.dump_oracle:
