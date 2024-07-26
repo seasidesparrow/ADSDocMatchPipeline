@@ -9,18 +9,18 @@ DOCMATCHPIPELINE_API_ORACLE_SERVICE_ATTEMPTS = '10'
 DOCMATCHPIPELINE_API_ORACLE_SERVICE_SLEEP_SEC = '1'
 
 # input filenames
-DOCMATCHPIPELINE_INPUT_FILENAME = './match_oracle.input'
+DOCMATCHPIPELINE_INPUT_FILENAME = '/match_oracle.input'
 
 # classic match of arxiv to published, or vice versa
-DOCMATCHPIPELINE_CLASSIC_MATCHES_FILENAME = './match.out'
+DOCMATCHPIPELINE_CLASSIC_MATCHES_FILENAME = '/match.out'
 
 # intermediate step filenames
-DOCMATCHPIPELINE_EPRINT_RESULT_FILENAME = './matched_eprint.output.csv'
-DOCMATCHPIPELINE_PUB_RESULT_FILENAME = './matched_pub.output.csv'
+DOCMATCHPIPELINE_EPRINT_RESULT_FILENAME = '/matched_eprint.output.csv'
+DOCMATCHPIPELINE_PUB_RESULT_FILENAME = '/matched_pub.output.csv'
 
 # final filename to be uploaded to google drive
-DOCMATCHPIPELINE_EPRINT_COMBINED_FILENAME = './compare_eprint.csv'
-DOCMATCHPIPELINE_PUB_COMBINED_FILENAME = './compare_pub.csv'
+DOCMATCHPIPELINE_EPRINT_COMBINED_FILENAME = '/compare_eprint.csv'
+DOCMATCHPIPELINE_PUB_COMBINED_FILENAME = '/compare_pub.csv'
 
 # filename to log failed metadata filenames
 DOCMATCHPIPELINE_RERUN_FILENAME = '../rerun.input'

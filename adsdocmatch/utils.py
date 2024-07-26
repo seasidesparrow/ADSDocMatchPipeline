@@ -23,7 +23,6 @@ class MissingFileException(Exception):
 class UserSubmittedException(Exception):
     pass
 
-
 # file handling routines
 def chowner(filename, uname="ads", ugroup="ads"):
     try:
@@ -32,26 +31,6 @@ def chowner(filename, uname="ads", ugroup="ads"):
         os.chown(filename, uid, gid)
     except Exception as err:
         raise FileOwnershipException(err)
-
-def dedup_pairs(input_pairs):
-    if input_pairs:
-        try:
-            output_pairs = []
-            output_resolve = []
-            for (pre, pub) in input_pairs:
-                pre_list = [x for (x,y) in output_pairs]
-                pub_list = [y for (x,y) in output_pairs]
-                if (pre, pub) not in output_pairs:
-                    if pre not in pre_list and pub not in pub_list and \
-                        pre not in pub_list and pub not in pre_list:
-                        output_pairs.append((pre, pub))
-                    else:
-                        output_resolve.append((pre, pub))
-            return output_pairs, output_resolve
-        except Exception as err:
-            raise MatchFormatException(err)
-    return [], []
-
 
 def backup_to_frozen(live_file, frozen_file):
     if (os.path.isfile(live_file)) and (os.path.isfile(frozen_file)):
@@ -79,13 +58,34 @@ def backup_to_frozen(live_file, frozen_file):
     else:
         raise MissingFileException("One or both of %s, %s are missing." % live_file, frozen_file)
 
+# processing routines
+def dedup_pairs(input_pairs):
+    if input_pairs:
+        try:
+            output_pairs = []
+            output_resolve = []
+            for (pre, pub) in input_pairs:
+                pre_list = [x for (x,y) in output_pairs]
+                pub_list = [y for (x,y) in output_pairs]
+                if (pre, pub) not in output_pairs:
+                    if pre not in pre_list and pub not in pub_list and \
+                        pre not in pub_list and pub not in pre_list:
+                        output_pairs.append((pre, pub))
+                    else:
+                        output_resolve.append((pre, pub))
+            return output_pairs, output_resolve
+        except Exception as err:
+            raise MatchFormatException(err)
+    return [], []
+
+
 
 def read_user_submitted(input_filename):
     try:
         input_pairs=[]
         with open(input_filename, "r") as fc:
             for line in fc.readlines():
-                if not re.search(r"^\s+#", line):
+                if not re.search(r"^\s?#", line):
                     try:
                         (pre, pub) = line.strip().split('\t')
                     except:
