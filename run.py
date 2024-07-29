@@ -180,6 +180,8 @@ def main():
         # daily: process and archive user submissions
         elif args.load_user_submitted:
             OracleUtil().load_user_submitted()
+
+        # daily: process and archive matches.kill
         elif args.load_matches_kill:
             input_filename = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FILE", "")
             frozen_filename = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FROZEN_FILE", "")
