@@ -617,9 +617,10 @@ class OracleUtil():
             logger.error("Error from cleanup_db: %s" % err)
             return "Error from cleanup_db: %s" % err
 
-    def load_user_submitted(self, input_filename=None, input_score=1.0):
+    def load_user_submitted(self, input_filename=None, frozen_filename= None, input_score=1.0):
         if not input_filename:
             input_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FILE", "/tmp/user_submitted.list")
+            frozen_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FROZEN_FILE", "/tmp/user_submitted_frozen.list")
         input_pairs = utils.read_user_submitted(input_filename)
         try:
             while input_pairs:
@@ -635,7 +636,6 @@ class OracleUtil():
                         input_pairs = retry_rows
                     else:
                         input_pairs = []
-            frozen_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FROZEN_FILE", "/tmp/user_submitted_frozen.list")
             utils.backup_to_frozen(input_filename, frozen_filename)
         except Exception as err:
             logger.error("Backup to frozen file failed: %s" % err)
