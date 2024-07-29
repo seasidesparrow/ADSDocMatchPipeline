@@ -617,14 +617,15 @@ class OracleUtil():
             logger.error("Error from cleanup_db: %s" % err)
             return "Error from cleanup_db: %s" % err
 
-    def load_user_submitted(self):
-        input_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FILE", "/tmp/user_submitted.list")
+    def load_user_submitted(self, input_filename=None, input_score=1.0):
+        if not input_filename:
+            input_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FILE", "/tmp/user_submitted.list")
         input_pairs = utils.read_user_submitted(input_filename)
         try:
             while input_pairs:
                 try:
                     (upload_rows, retry_rows) = utils.dedup_pairs(input_pairs)
-                    match_upload = [[x, y, 1.0] for (x, y) in upload_rows]
+                    match_upload = [[x, y, input_score] for (x, y) in upload_rows]
                     result = self.add_to_db(match_upload)
                     logger.info("Result from add_to_db: %s" % result)
                 except Exception as err:

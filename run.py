@@ -99,6 +99,13 @@ def get_args():
                         default=False,
                         help="Submit the current user-submitted list to oracle, and empty the file contents into the frozen file.")
 
+    parser.add_argument("-uk",
+                        "--load-matches-kill",
+                        dest="load_matches_kill",
+                        action="store_true",
+                        default=False,
+                        help="Submit the current curated matches.kill list to oracle, and empty the file contents into the frozen file.")
+
     return parser.parse_args()
 
 
@@ -173,6 +180,10 @@ def main():
         # daily: process and archive user submissions
         elif args.load_user_submitted:
             OracleUtil().load_user_submitted()
+        elif args.load_matches_kill:
+            input_file = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FILE", "")
+            if input_file:
+                OracleUtil().load_user_submitted(input_file=input_file, input_score=-1.0)
 
         # daily: dump the oracle database to file
         elif args.dump_oracle:
