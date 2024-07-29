@@ -181,9 +181,9 @@ def main():
         elif args.load_user_submitted:
             OracleUtil().load_user_submitted()
         elif args.load_matches_kill:
-            input_file = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FILE", "")
-            if input_file:
-                OracleUtil().load_user_submitted(input_file=input_file, input_score=-1.0)
+            input_filename = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FILE", "")
+            if input_filename:
+                OracleUtil().load_user_submitted(input_filename=input_filename, input_score=-1.0)
 
         # daily: dump the oracle database to file
         elif args.dump_oracle:
