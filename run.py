@@ -94,7 +94,7 @@ def get_args():
 
     parser.add_argument("-us",
                         "--load-user-submitted",
-                        dest="load_user_submitted",
+                        dest="load_curated_file",
                         action="store_true",
                         default=False,
                         help="Submit the current user-submitted list to oracle, and empty the file contents into the frozen file.")
@@ -104,7 +104,7 @@ def get_args():
                         dest="load_matches_kill",
                         action="store_true",
                         default=False,
-                        help="Submit the current curated matches.kill list to oracle, and empty the file contents into the frozen file.")
+                        help="Submit the current curated matches.kill list to oracle.")
 
     return parser.parse_args()
 
@@ -178,15 +178,15 @@ def main():
                 logger.error("Error issuing cleanup_db command to oracle_service: %s" % err)
 
         # daily: process and archive user submissions
-        elif args.load_user_submitted:
-            OracleUtil().load_user_submitted()
+        elif args.load_curated_file:
+            OracleUtil().load_curated_file()
 
-        # daily: process and archive matches.kill
+        # daily: process matches.kill without archiving
         elif args.load_matches_kill:
             input_filename = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FILE", "")
             frozen_filename = conf.get("DOCMATCHPIPELINE_MATCHES_KILL_FROZEN_FILE", "")
             if input_filename:
-                OracleUtil().load_user_submitted(input_filename=input_filename, frozen_filename=frozen_filename, input_score=-1.0)
+                OracleUtil().load_curated_file(input_filename=input_filename, frozen_filename=frozen_filename, input_score=-1.0, do_backup=False)
 
         # daily: dump the oracle database to file
         elif args.dump_oracle:

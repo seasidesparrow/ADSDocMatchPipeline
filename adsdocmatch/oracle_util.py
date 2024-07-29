@@ -617,7 +617,7 @@ class OracleUtil():
             logger.error("Error from cleanup_db: %s" % err)
             return "Error from cleanup_db: %s" % err
 
-    def load_user_submitted(self, input_filename=None, frozen_filename=None, input_score=1.0):
+    def load_curated_file(self, input_filename=None, frozen_filename=None, input_score=1.0, do_backup=True):
         if not input_filename:
             input_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FILE", "/tmp/user_submitted.list")
             frozen_filename = config.get("DOCMATCHPIPELINE_USER_SUBMITTED_FROZEN_FILE", "/tmp/user_submitted_frozen.list")
@@ -639,9 +639,12 @@ class OracleUtil():
         except Exception as err:
             logger.error("Failure adding user submitted data: %s" % err)
         else:
-            try:
-                utils.backup_to_frozen(input_filename, frozen_filename)
-            except Exception as err:
-                logger.error("Backup to frozen file failed: %s" % err)
+            if do_backup:
+                try:
+                    utils.backup_to_frozen(input_filename, frozen_filename)
+                except Exception as err:
+                    logger.error("Backup to frozen file failed: %s" % err)
+                else:
+                    logger.info("Contents of %s successfully backed up to %s" % (input_filename, frozen_filename)
             else:
-                logger.info("Contents of %s successfully backed up to %s" % (input_filename, frozen_filename)
+                logger.info("Backup not triggered for %s, stopping." % input_filename)
