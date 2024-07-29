@@ -645,6 +645,6 @@ class OracleUtil():
                 except Exception as err:
                     logger.error("Backup to frozen file failed: %s" % err)
                 else:
-                    logger.info("Contents of %s successfully backed up to %s" % (input_filename, frozen_filename)
+                    logger.info("Contents of %s successfully backed up to %s" % (input_filename, frozen_filename))
             else:
                 logger.info("Backup not triggered for %s, stopping." % input_filename)
