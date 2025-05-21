@@ -26,6 +26,8 @@ class MatchableStatusException(Exception):
 RE_YEAR_START = re.compile(r'^\d')
 RE_VOL_END = re.compile(r'.*\d$')
 
+notMatched = config.get("DOCMATCHPIPELINE_NOMATCH", [])
+
 
 def matchable_status(bibstem):
     """
@@ -50,6 +52,7 @@ def matchable_status(bibstem):
             no_index = data.get("summary", {}).get("master", {}).get("not_indexed", True)
             if (bibstem and pub_type):
                 if pub_type == "Journal" \
+                    and bibstem not in notMatched \
                     and not no_index \
                     and not re.match(RE_YEAR_START, bibstem) \
                     and not re.match(RE_VOL_END, bibstem):

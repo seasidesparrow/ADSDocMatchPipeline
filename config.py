@@ -53,4 +53,34 @@ DOCMATCHPIPELINE_ORACLE_DUMP_AGE=9999
 DOCMATCHPIPELINE_USER_SUBMITTED_FILE="user_submitted.list"
 DOCMATCHPIPELINE_USER_SUBMITTED_FROZEN_FILE="user_submitted_frozen.list"
 
-
+DOCMATCHPIPELINE_NOMATCH=[
+    "A&AA",
+    "AAS",
+    "AbICA",
+    "AGAb",
+    "AGM",
+    "AGUFM",
+    "AGUOS",
+    "AGUSM",
+    "AMS",
+    "APS",
+    "AVSOA",
+    "AbApA",
+    "BAAS",
+    "BAPS",
+    "DDA",
+    "DPS",
+    "DSROA",
+    "ESS",
+    "EAEJA",
+    "EGSGA",
+    "EGUGA",
+    "EPSC",
+    "HAD",
+    "HEAD",
+    "TESS",
+    "IAUGA",
+    "IAUJD",
+    "LPI",
+    "SPD",
+]
