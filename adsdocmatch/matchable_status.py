@@ -38,6 +38,8 @@ def matchable_status(bibstem):
     try:
         token = config.get("DOCMATCHPIPELINE_API_TOKEN", None)
         jdb_url = config.get("DOCMATCHPIPELINE_API_JOURNALS_SERVICE_URL", None)
+        if bibstem in notMatched:
+            return False
         if token and jdb_url:
             header = {"Authorization": "Bearer %s" % token}
             query = "/summary/" + bibstem
@@ -52,7 +54,6 @@ def matchable_status(bibstem):
             no_index = data.get("summary", {}).get("master", {}).get("not_indexed", True)
             if (bibstem and pub_type):
                 if pub_type == "Journal" \
-                    and bibstem not in notMatched \
                     and not no_index \
                     and not re.match(RE_YEAR_START, bibstem) \
                     and not re.match(RE_VOL_END, bibstem):
